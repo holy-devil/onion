@@ -27,18 +27,74 @@
 <body>
 
 <div id="visdown-input">  
-  # Visdown
-
-  **Make visualisations using only markdown**
-
-  Write visualisation using a simple declarative markup like you would write code. Just wrap it in fenced block (three backticks) and mark the language as `vis`.
-
-  *Make simple static visualisations*  
-
+ 
+```vis
+---
+width: 400
+height: 400
+data:
+  url: data/notes.csv
+layer:
+- selection:
+    Slr:
+      type: single
+      fields:
+      - year
+      bind:
+        input: range
+        min: 1978
+        max: 2015
+        step: 1
+    mouHov:
+      type: multi
+      'on': mouseover
+      encodings:
+      - x
+      - y
+      nearest: true
+  mark: circle
+  transform:
+  - filter: datum.year == Slr_year
+  encoding:
+    x:
+      type: nominal
+      field: denom
+    y:
+      type: quantitative
+      field: number
+    color:
+      value: grey
+      condition:
+        selection: mouHov
+        field: denom
+        type: nominal
+    size:
+      value: 500
+- mark: text
+  encoding:
+    x:
+      field: denom
+      type: nominal
+      axis: 
+    y:
+      type: quantitative
+      field: number
+      axis: 
+    text:
+      field: denom
+      type: nominal
+      
+config:
+  text:
+    align: right
+    dx: -5
+    dy: 5
+```
+ 
 ## Distribution  
 ```vis
 data:
-  url: "data/notes.csv"
+  url: "data/onion.csv"
 transform:
   - filter: datum.year == 2015
 mark: bar
@@ -66,127 +122,7 @@ encoding:
   color:
     type: nominal
     field: denom
-```
-## Chart2
-```vis
-data:
-  url: "data/notes.csv"
-transform:
-  - filter: datum.year == 2015
-mark: circle
-size:
-  weight: 300
-width: 700
-height: 400
-encoding:
-  y:
-    type: nominal
-    field: denom 
-    axis:
-      format: %Y
-      title: Denominations
-      angle: 90
-      titleFontSize: 12
-  x:
-    type: quantitative
-    field: number
-    
-    axis:
-      title: Total number of currency in circulation (in Billions)
-      angle: 0
-      titleFontSize: 12
-  color:
-    type: nominal
-    field: denom
-```
-```vis
-data:
-  url: "data/notes.csv"
-mark: area
-width: 800
-height: 500
-encoding:
-  x:
-    type: temporal
-    field: year 
-    axis:
-      format: %Y
-      title: Year
-      angle: 0
-      titleFontSize: 12
-  y:
-    type: quantitative
-    field: money
-    aggregate: sum
-    axis:
-      dx: 50
-      title: Total money in circulation (in Billions)
-      angle: 90
-      titleFontSize: 12
-  color:
-    type: nominal
-    field: denom
-```
-
-
-
-```vis
-data:
-  url: "data/sample.csv"
-mark: circle
-encoding:
-  x:
-    type: quantitative
-    field: sales
-    axis: null
-  y:
-    type: quantitative
-    field: profit
-    axis: null
-  size:
-    value: 500
-  color:
-    type: nominal
-    field: area
-    legend: null
-```
-
-  Visdown is based on the grammar of interactive graphic (vega-lite) which allows you to specify the visualisation including interactions in a declarative fashion.
-
-  *Make interactive visualisations*
-
-  Select the circles with the mouse
-
-  ```vis
-  data:
-    url: "data/cars.csv"
-  mark: circle
-  selection:
-    brush:
-      type: interval
-  encoding:
-    x:
-      type: quantitative
-      field: kmpl
-      scale:
-       domain: [12,25]
-    y:
-      type: quantitative
-      field: price
-      scale:
-       domain: [100,900]
-    color:
-      condition:
-        selection: brush
-        field: type
-        type: nominal
-      value: grey
-    size:
-      type: quantitative
-      field: bhp
-  width: 450
-  height: 300
-  ```    
+```    
     
 </div>
 <div id="visdown-output"></div>
